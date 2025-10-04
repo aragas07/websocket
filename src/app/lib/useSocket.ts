@@ -11,7 +11,7 @@ export function useSocket() {
     fetch("/api/socket");
 
     if (!socket) {
-      socket = io("http://localhost:3001", {
+      socket = io("https://websocket-q0xf.onrender.com", {
         path: "/api/socket",
       });
     }
