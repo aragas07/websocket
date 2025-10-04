@@ -6,10 +6,13 @@ export const config = {
   },
 };
 
+declare global {
+  var io: IOServer | undefined;
+}
 
-const globalAny: any = global;
+//const globalAny: any = global;
 export async function GET(req: NextRequest) {
-  if (!globalAny.io) {
+  if (!global.io) {
     console.log("⚡ Starting Socket.IO server...");
 
     // Create Socket.IO server and attach it to the underlying Next.js HTTP server
@@ -32,7 +35,7 @@ export async function GET(req: NextRequest) {
       });
     });
 
-    globalAny.io = io;
+    global.io = io;
   }
 
   return new Response("Socket.IO server running", { status: 200 });
