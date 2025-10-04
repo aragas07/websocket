@@ -1,25 +1,28 @@
-import { Server as IOServer } from 'socket.io';
 import { NextRequest } from "next/server";
-export const config = {
-  api: {
-    bodyParser: false, // disable body parsing for socket.io
-  },
-};
+import { Server as IOServer } from "socket.io";
+import { Server as HTTPServer } from "http";
+
+// Prevent multiple instances (hot reload friendly)
 
 declare global {
   var io: IOServer | undefined;
 }
 
-//const globalAny: any = global;
-export async function GET(req: NextRequest) {
+export const config = {
+  api: {
+    bodyParser: false, // disable body parsing
+  },
+};
+
+export async function GET() {
   if (!global.io) {
     console.log("⚡ Starting Socket.IO server...");
 
     // Create Socket.IO server and attach it to the underlying Next.js HTTP server
-    const io = new IOServer({
+    const io = new IOServer(3001, {
       path: "/api/socket",
       cors: {
-        origin: "https://websocketpractice-p64q.onrender.com",
+        origin: "*",
       },
     });
 
@@ -39,5 +42,4 @@ export async function GET(req: NextRequest) {
   }
 
   return new Response("Socket.IO server running", { status: 200 });
-
 }

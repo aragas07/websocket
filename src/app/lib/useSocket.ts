@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
 let socket: Socket;
-export const useSocket = () => {
+
+export function useSocket() {
   const [connected, setConnected] = useState(false);
+
   useEffect(() => {
+    // ensure the server boots
     fetch("/api/socket");
+
     if (!socket) {
-      socket = io({
+      socket = io("http://localhost:3001", {
         path: "/api/socket",
       });
     }
@@ -22,4 +26,4 @@ export const useSocket = () => {
   }, []);
 
   return { socket, connected };
-};
+}
